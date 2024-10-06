@@ -18,6 +18,11 @@ const purchases = {
   B: 0,
   C: 0,
 };
+const costs = {
+  A: 10,
+  B: 100,
+  C: 1000,
+};
 const framesPerSecond = 60;
 
 const display = document.createElement("p");
@@ -39,19 +44,18 @@ clickButton.onclick = () => {
 };
 
 const upgradeButtonA = document.createElement("button");
-upgradeButtonA.innerHTML = "A";
 app.append(upgradeButtonA);
 upgradeButtonA.disabled = true;
 
 const upgradeButtonB = document.createElement("button");
-upgradeButtonB.innerHTML = "B";
 app.append(upgradeButtonB);
 upgradeButtonB.disabled = true;
 
 const upgradeButtonC = document.createElement("button");
-upgradeButtonC.innerHTML = "C";
 app.append(upgradeButtonC);
 upgradeButtonC.disabled = true;
+
+displayUpgrades();
 
 function incrementNumber() {
   isRunning = true;
@@ -63,8 +67,10 @@ function incrementNumber() {
 
 upgradeButtonA.addEventListener("click", () => {
   purchases.A++;
-  numClicks -= 10;
+  numClicks -= costs.A;
+  costs.A *= 1.15;
   displayCats();
+  displayUpgrades();
   clickRate += 0.1;
   if (!isRunning) {
     requestAnimationFrame(incrementNumber);
@@ -73,8 +79,10 @@ upgradeButtonA.addEventListener("click", () => {
 
 upgradeButtonB.addEventListener("click", () => {
   purchases.B++;
-  numClicks -= 100;
+  numClicks -= costs.B;
+  costs.B *= 1.15;
   displayCats();
+  displayUpgrades();
   clickRate += 2.0;
   if (!isRunning) {
     requestAnimationFrame(incrementNumber);
@@ -83,8 +91,10 @@ upgradeButtonB.addEventListener("click", () => {
 
 upgradeButtonC.addEventListener("click", () => {
   purchases.C++;
-  numClicks -= 1000;
+  numClicks -= costs.C;
+  costs.C *= 1.15;
   displayCats();
+  displayUpgrades();
   clickRate += 50;
   if (!isRunning) {
     requestAnimationFrame(incrementNumber);
@@ -97,8 +107,14 @@ function displayCats() {
   purchasesDisplay.innerHTML = `A: ${purchases.A}  B: ${purchases.B}  C: ${purchases.C}`;
 }
 
+function displayUpgrades() {
+  upgradeButtonA.innerHTML = `A ${costs.A.toFixed(2)}`;
+  upgradeButtonB.innerHTML = `B ${costs.B.toFixed(2)}`;
+  upgradeButtonC.innerHTML = `C ${costs.C.toFixed(2)}`;
+}
+
 function toggleUpgradeButton() {
-  upgradeButtonA.disabled = numClicks < 10;
-  upgradeButtonB.disabled = numClicks < 100;
-  upgradeButtonC.disabled = numClicks < 1000;
+  upgradeButtonA.disabled = numClicks < costs.A;
+  upgradeButtonB.disabled = numClicks < costs.B;
+  upgradeButtonC.disabled = numClicks < costs.C;
 }
