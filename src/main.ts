@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My great game";
+const gameName = "My cat game";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -11,7 +11,7 @@ app.append(header);
 
 const display = document.createElement("p");
 let numClicks: number = 0;
-display.innerHTML = `${numClicks} cats`;
+displayCats();
 app.append(display);
 
 // button to increase the number of cats
@@ -20,30 +20,36 @@ clickButton.innerHTML = "😼";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
-  display.innerHTML = `${numClicks} cats`;
+  displayCats();
+  upgradeButton.disabled = numClicks < 10;
 };
 
-// increases the number of cats every second
-// setInterval(incrementNumClicks, 1000);
+const upgradeButton = document.createElement("button");
+upgradeButton.innerHTML = "Upgrade";
+app.append(upgradeButton);
+upgradeButton.disabled = true;
 
-// function incrementNumClicks() {
-//   numClicks++;
-//   display.innerHTML = `${numClicks} cats`;
-// }
+upgradeButton.onclick = () => {
+  numClicks -= 10;
+  displayCats();
+  requestAnimationFrame(incrementNumber);
+};
 
-let lastFrameTime = performance.now();
-
-function updateNumClicks(currentTime: number) {
-  const deltaTime = currentTime - lastFrameTime;
-  lastFrameTime = currentTime;
-  
-  // Increment numClicks based on the time difference
-  numClicks += deltaTime / 1000;
-  display.innerHTML = `${numClicks.toFixed(2)} cats`;
-
-  // Request the next frame
-  requestAnimationFrame(updateNumClicks);
+const clickRate = 1;
+const framesPerSecond = 60;
+const incrementRate = clickRate / framesPerSecond;
+const startTime = performance.now();
+function incrementNumber() {
+  upgradeButton.disabled = numClicks < 10;
+  const currentTime = performance.now();
+  const deltaTime = currentTime - startTime;
+  if (deltaTime / 1000 >= 1 / framesPerSecond) {
+    numClicks += incrementRate;
+    displayCats();
+  }
+  requestAnimationFrame(incrementNumber);
 }
 
-// Start the animation loop
-requestAnimationFrame(updateNumClicks);
+function displayCats() {
+  display.innerHTML = `${numClicks.toFixed(2)} cats`;
+}
