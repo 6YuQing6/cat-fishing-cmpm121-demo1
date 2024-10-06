@@ -9,11 +9,15 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
-let numClicks = 0;
+const display = document.createElement("p");
+let numClicks: number = 0;
+display.innerHTML = `${numClicks} cats`;
+app.append(display);
+
 const clickButton = document.createElement("button");
 clickButton.innerHTML = "😼";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
-  clickButton.innerHTML = `😼 ${numClicks}`;
+  display.innerHTML = `${numClicks} cats`;
 };
