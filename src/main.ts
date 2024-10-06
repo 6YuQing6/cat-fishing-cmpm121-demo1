@@ -36,7 +36,7 @@ let lastFrameTime = performance.now();
 function updateNumClicks(currentTime: number) {
   const deltaTime = currentTime - lastFrameTime;
   lastFrameTime = currentTime;
-
+  
   // Increment numClicks based on the time difference
   numClicks += deltaTime / 1000;
   display.innerHTML = `${numClicks.toFixed(2)} cats`;
