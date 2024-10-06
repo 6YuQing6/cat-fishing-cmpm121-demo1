@@ -24,9 +24,27 @@ clickButton.onclick = () => {
 };
 
 // increases the number of cats every second
-setInterval(incrementNumClicks, 1000);
+// setInterval(incrementNumClicks, 1000);
 
-function incrementNumClicks() {
-  numClicks++;
-  display.innerHTML = `${numClicks} cats`;
+// function incrementNumClicks() {
+//   numClicks++;
+//   display.innerHTML = `${numClicks} cats`;
+// }
+
+let lastFrameTime = performance.now();
+
+function updateNumClicks(currentTime: number) {
+  const deltaTime = currentTime - lastFrameTime;
+  lastFrameTime = currentTime;
+  
+
+  // Increment numClicks based on the time difference
+  numClicks += deltaTime / 1000;
+  display.innerHTML = `${numClicks.toFixed(2)} cats`;
+
+  // Request the next frame
+  requestAnimationFrame(updateNumClicks);
 }
+
+// Start the animation loop
+requestAnimationFrame(updateNumClicks);
