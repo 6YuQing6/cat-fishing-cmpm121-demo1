@@ -14,6 +14,7 @@ let numClicks: number = 0;
 display.innerHTML = `${numClicks} cats`;
 app.append(display);
 
+// button to increase the number of cats
 const clickButton = document.createElement("button");
 clickButton.innerHTML = "😼";
 app.append(clickButton);
@@ -21,3 +22,11 @@ clickButton.onclick = () => {
   numClicks++;
   display.innerHTML = `${numClicks} cats`;
 };
+
+// increases the number of cats every second
+setInterval(incrementNumClicks, 1000);
+
+function incrementNumClicks() {
+  numClicks++;
+  display.innerHTML = `${numClicks} cats`;
+}
