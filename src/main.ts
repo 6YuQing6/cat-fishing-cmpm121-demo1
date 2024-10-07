@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "My cat game";
+const gameName = "Cat-fishing";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -28,14 +28,17 @@ const framesPerSecond = 60;
 const display = document.createElement("p");
 const growthRateDisplay = document.createElement("p");
 const purchasesDisplay = document.createElement("p");
+const buttons = document.createElement("div");
 displayCats();
 app.append(display);
 app.append(growthRateDisplay);
 app.append(purchasesDisplay);
+app.append(buttons);
 
 // button to increase the number of cats
 const clickButton = document.createElement("button");
-clickButton.innerHTML = "😼";
+clickButton.innerHTML = "🐟";
+clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
@@ -44,15 +47,15 @@ clickButton.onclick = () => {
 };
 
 const upgradeButtonA = document.createElement("button");
-app.append(upgradeButtonA);
+buttons.append(upgradeButtonA);
 upgradeButtonA.disabled = true;
 
 const upgradeButtonB = document.createElement("button");
-app.append(upgradeButtonB);
+buttons.append(upgradeButtonB);
 upgradeButtonB.disabled = true;
 
 const upgradeButtonC = document.createElement("button");
-app.append(upgradeButtonC);
+buttons.append(upgradeButtonC);
 upgradeButtonC.disabled = true;
 
 displayUpgrades();
@@ -102,15 +105,15 @@ upgradeButtonC.addEventListener("click", () => {
 });
 
 function displayCats() {
-  display.innerHTML = `${numClicks.toFixed(2)} cats`;
-  growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)}`;
-  purchasesDisplay.innerHTML = `A: ${purchases.A}  B: ${purchases.B}  C: ${purchases.C}`;
+  display.innerHTML = `${numClicks.toFixed(2)} fish`;
+  growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)} fish/sec`;
+  purchasesDisplay.innerHTML = `${purchases.A} Kittens  ${purchases.B} Alley Cats ${purchases.C} Captain Cat Sparrow`;
 }
 
 function displayUpgrades() {
-  upgradeButtonA.innerHTML = `A ${costs.A.toFixed(2)}`;
-  upgradeButtonB.innerHTML = `B ${costs.B.toFixed(2)}`;
-  upgradeButtonC.innerHTML = `C ${costs.C.toFixed(2)}`;
+  upgradeButtonA.innerHTML = `Kitty ${costs.A.toFixed(2)}`; // want a helping paw?
+  upgradeButtonB.innerHTML = `Alley Cat ${costs.B.toFixed(2)}`; // its a big catch
+  upgradeButtonC.innerHTML = `Captain Cat Sparrow ${costs.C.toFixed(2)}`; //
 }
 
 function toggleUpgradeButton() {
