@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "Cat-fishing";
+const gameName = "Cat Fishing";
 document.title = gameName;
 
 const header = document.createElement("h1");
@@ -13,12 +13,14 @@ app.append(header);
 let numClicks: number = 0;
 let isRunning: boolean = false;
 let clickRate: number = 1;
+const framesPerSecond = 60;
 
 interface Item {
   name: string;
   cost: number;
   rate: number;
   purchases: number;
+  description: string;
 }
 
 const availableCats: Item[] = [
@@ -27,22 +29,39 @@ const availableCats: Item[] = [
     cost: 10,
     rate: 0.1,
     purchases: 0,
+    description: "A helping paw",
   },
   {
     name: "Alley Cat",
     cost: 100,
     rate: 2.0,
     purchases: 0,
+    description: "Catching fish is a catwalk for this one",
   },
   {
     name: "Captain Cat Sparrow",
     cost: 1000,
     rate: 50,
     purchases: 0,
+    description: "A purr-ate captain with a nose for fish and treasure alike",
+  },
+  {
+    name: "Chairman Meow",
+    cost: 10000,
+    rate: 800,
+    purchases: 0,
+    description:
+      "Leads the revolution of cats with paws of iron. Fish production skyrockets!",
+  },
+  {
+    name: "Cat God",
+    cost: 100000,
+    rate: 7000,
+    purchases: 0,
+    description:
+      "Worshipped by all felines. Fish appear at the blink of an eye!",
   },
 ];
-
-const framesPerSecond = 60;
 
 // main document elements
 const display = document.createElement("p");
@@ -65,21 +84,28 @@ clickButton.onclick = () => {
   displayCats();
 };
 
+function displayUpgradeName(item: Item): string {
+  return `
+    <span class="item-info">${item.name} ${item.cost.toFixed(2)}</span><br/>
+    <span class="item-description">${item.description}</span>
+  `;
+}
+
 // upgrade buttons
 availableCats.map((item: Item) => {
   const upgradeButton = document.createElement("button");
   upgradeButton.disabled = true;
-  upgradeButton.innerHTML = `${item.name} ${item.cost.toFixed(2)}`;
+  upgradeButton.innerHTML = displayUpgradeName(item);
   upgradeButton.addEventListener("click", () => {
     console.log("clicked");
     item.purchases++;
     numClicks -= item.cost;
     item.cost *= 1.15;
     displayCats();
-    upgradeButton.innerHTML = `${item.name} ${item.cost.toFixed(2)}`;
+    upgradeButton.innerHTML = displayUpgradeName(item);
     clickRate += item.rate;
     if (!isRunning) {
-      requestAnimationFrame(incrementNumber);
+      requestAnimationFrame(incrementNumClicks);
     }
   });
   buttons.append(upgradeButton);
@@ -92,16 +118,16 @@ availableCats.map((item: Item) => {
   // Ensure the button is toggled on each frame
   const trackButton = () => {
     toggleUpgradeButtonForItem();
-    requestAnimationFrame(trackButton); // Continuously track
+    requestAnimationFrame(trackButton);
   };
   trackButton();
 });
 
-function incrementNumber() {
+function incrementNumClicks() {
   isRunning = true;
   numClicks += clickRate / framesPerSecond;
   displayCats();
-  requestAnimationFrame(incrementNumber);
+  requestAnimationFrame(incrementNumClicks);
 }
 
 function displayCats() {

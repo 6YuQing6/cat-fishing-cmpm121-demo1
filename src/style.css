@@ -117,3 +117,13 @@ button:focus-visible {
     background-color: #bed5fd;
   }
 }
+
+.item-info {
+  font-size: 1rem;
+}
+
+.item-description {
+  font-size: 0.8rem;
+  display: block;
+  margin-top: 4px;
+}
