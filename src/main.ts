@@ -13,7 +13,7 @@ app.append(header);
 let numClicks: number = 0;
 let isRunning: boolean = false;
 let clickRate: number = 1;
-const framesPerSecond = 61;
+const framesPerSecond = 60;
 
 interface Item {
   name: string;
