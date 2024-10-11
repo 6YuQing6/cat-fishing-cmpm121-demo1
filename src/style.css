@@ -75,7 +75,7 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 16px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   margin: 0.5em;
@@ -103,6 +103,11 @@ button:focus-visible {
   width: 10em;
   height: 10em;
   padding: 0;
+  border-radius: 50%;
+}
+
+.big-emoji {
+  font-size: 5em; /* Customize the size of the emoji */
 }
 
 @media (prefers-color-scheme: light) {

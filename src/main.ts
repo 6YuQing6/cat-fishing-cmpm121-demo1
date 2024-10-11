@@ -23,7 +23,7 @@ interface Item {
   description: string;
 }
 
-const availableCats: Item[] = [
+const availableUpgrades: Item[] = [
   {
     name: "Kitten",
     cost: 10,
@@ -76,7 +76,7 @@ app.append(buttons);
 
 // button to increase the number of cats
 const clickButton = document.createElement("button");
-clickButton.innerHTML = "🐟";
+clickButton.innerHTML = `<span class="big-emoji">🐟</span>`;
 clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
@@ -92,7 +92,7 @@ function displayUpgradeName(item: Item): string {
 }
 
 // upgrade buttons
-availableCats.map((item: Item) => {
+availableUpgrades.map((item: Item) => {
   const upgradeButton = document.createElement("button");
   upgradeButton.disabled = true;
   upgradeButton.innerHTML = displayUpgradeName(item);
@@ -131,9 +131,9 @@ function incrementNumClicks() {
 }
 
 function displayCats() {
-  display.innerHTML = `${numClicks.toFixed(2)} fish`;
-  growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)} fish/sec`;
-  purchasesDisplay.innerHTML = availableCats
+  display.innerHTML = `${numClicks.toFixed(2)} 🐟`;
+  growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)} 🐟/sec`;
+  purchasesDisplay.innerHTML = availableUpgrades
     .map((item) => `${item.purchases} ${item.name}`)
     .join(" ");
 }
