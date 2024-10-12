@@ -14,6 +14,7 @@ let numClicks: number = 0;
 let isRunning: boolean = false;
 let clickRate: number = 1;
 const framesPerSecond = 60;
+const clickSound = new Audio("/click-sound.wav");
 
 interface Item {
   name: string;
@@ -81,6 +82,7 @@ clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
+  clickSound.play();
   updateDisplay();
 };
 
@@ -97,7 +99,6 @@ availableUpgrades.map((item: Item) => {
   upgradeButton.disabled = true;
   upgradeButton.innerHTML = displayUpgradeName(item);
   upgradeButton.addEventListener("click", () => {
-    console.log("clicked");
     item.purchases++;
     numClicks -= item.cost;
     item.cost *= 1.15;
