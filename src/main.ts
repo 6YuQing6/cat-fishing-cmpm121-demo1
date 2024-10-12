@@ -68,7 +68,7 @@ const display = document.createElement("p");
 const growthRateDisplay = document.createElement("p");
 const purchasesDisplay = document.createElement("p");
 const buttons = document.createElement("div");
-displayCats();
+updateDisplay();
 app.append(display);
 app.append(growthRateDisplay);
 app.append(purchasesDisplay);
@@ -81,7 +81,7 @@ clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
-  displayCats();
+  updateDisplay();
 };
 
 function displayUpgradeName(item: Item): string {
@@ -101,7 +101,7 @@ availableUpgrades.map((item: Item) => {
     item.purchases++;
     numClicks -= item.cost;
     item.cost *= 1.15;
-    displayCats();
+    updateDisplay();
     upgradeButton.innerHTML = displayUpgradeName(item);
     clickRate += item.rate;
     if (!isRunning) {
@@ -110,14 +110,9 @@ availableUpgrades.map((item: Item) => {
   });
   buttons.append(upgradeButton);
 
-  // Add logic to toggle this specific button
-  const toggleUpgradeButtonForItem = () => {
-    upgradeButton.disabled = numClicks < item.cost;
-  };
-
   // Ensure the button is toggled on each frame
   const trackButton = () => {
-    toggleUpgradeButtonForItem();
+    upgradeButton.disabled = numClicks < item.cost;
     requestAnimationFrame(trackButton);
   };
   trackButton();
@@ -126,11 +121,11 @@ availableUpgrades.map((item: Item) => {
 function incrementNumClicks() {
   isRunning = true;
   numClicks += clickRate / framesPerSecond;
-  displayCats();
+  updateDisplay();
   requestAnimationFrame(incrementNumClicks);
 }
 
-function displayCats() {
+function updateDisplay() {
   display.innerHTML = `${numClicks.toFixed(2)} 🐟`;
   growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)} 🐟/sec`;
   purchasesDisplay.innerHTML = availableUpgrades
