@@ -10,13 +10,13 @@ header.innerHTML = gameName;
 app.append(header);
 
 // global variables
-let numClicks: number = 0;
+let fishCount: number = 0;
 let isRunning: boolean = false;
-let clickRate: number = 1;
+let fishPerSecond: number = 1;
 const FRAMES_PER_SECOND = 60;
 const COST_MULTIPLIER = 1.15;
 
-interface Item {
+interface Upgrade {
   name: string;
   cost: number;
   rate: number;
@@ -24,7 +24,7 @@ interface Item {
   description: string;
 }
 
-const availableUpgrades: Item[] = [
+const availableUpgrades: Upgrade[] = [
   {
     name: "Kitten",
     cost: 10,
@@ -81,54 +81,54 @@ clickButton.innerHTML = `<span class="big-emoji">🐟</span>`;
 clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
-  numClicks++;
+  fishCount++;
   updateDisplay();
 };
 
-function displayUpgradeName(item: Item): string {
+function displayUpgradeName(upgrade: Upgrade): string {
   return `
-    <span class="item-info">${item.name} ${item.cost.toFixed(2)}</span><br/>
-    <span class="item-description">${item.description}</span>
+    <span class="item-info">${upgrade.name} ${upgrade.cost.toFixed(2)}</span><br/>
+    <span class="item-description">${upgrade.description}</span>
   `;
 }
 
 // upgrade buttons
-availableUpgrades.map((item: Item) => {
+availableUpgrades.map((upgrade: Upgrade) => {
   const upgradeButton = document.createElement("button");
   upgradeButton.disabled = true;
-  upgradeButton.innerHTML = displayUpgradeName(item);
+  upgradeButton.innerHTML = displayUpgradeName(upgrade);
   upgradeButton.addEventListener("click", () => {
-    item.purchases++;
-    numClicks -= item.cost;
-    item.cost *= COST_MULTIPLIER;
+    upgrade.purchases++;
+    fishCount -= upgrade.cost;
+    upgrade.cost *= COST_MULTIPLIER;
     updateDisplay();
-    upgradeButton.innerHTML = displayUpgradeName(item);
-    clickRate += item.rate;
+    upgradeButton.innerHTML = displayUpgradeName(upgrade);
+    fishPerSecond += upgrade.rate;
     if (!isRunning) {
-      requestAnimationFrame(incrementNumClicks);
+      requestAnimationFrame(incrementfishCount);
     }
   });
   buttons.append(upgradeButton);
 
   // Ensure the button is toggled on each frame
   const trackButton = () => {
-    upgradeButton.disabled = numClicks < item.cost;
+    upgradeButton.disabled = fishCount < upgrade.cost;
     requestAnimationFrame(trackButton);
   };
   trackButton();
 });
 
-function incrementNumClicks() {
+function incrementfishCount() {
   isRunning = true;
-  numClicks += clickRate / FRAMES_PER_SECOND;
+  fishCount += fishPerSecond / FRAMES_PER_SECOND;
   updateDisplay();
-  requestAnimationFrame(incrementNumClicks);
+  requestAnimationFrame(incrementfishCount);
 }
 
 function updateDisplay() {
-  display.innerHTML = `${numClicks.toFixed(2)} 🐟`;
-  growthRateDisplay.innerHTML = `Growth rate: ${clickRate.toFixed(2)} 🐟/sec`;
+  display.innerHTML = `${fishCount.toFixed(2)} 🐟`;
+  growthRateDisplay.innerHTML = `Growth rate: ${fishPerSecond.toFixed(2)} 🐟/sec`;
   purchasesDisplay.innerHTML = availableUpgrades
-    .map((item) => `${item.purchases} ${item.name}`)
+    .map((upgrade) => `${upgrade.purchases} ${upgrade.name}`)
     .join(" ");
 }
