@@ -13,8 +13,8 @@ app.append(header);
 let numClicks: number = 0;
 let isRunning: boolean = false;
 let clickRate: number = 1;
-const framesPerSecond = 60;
-const clickSound = new Audio("/click-sound.wav");
+const FRAMES_PER_SECOND = 60;
+const COST_MULTIPLIER = 1.15;
 
 interface Item {
   name: string;
@@ -82,7 +82,6 @@ clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
   numClicks++;
-  clickSound.play();
   updateDisplay();
 };
 
@@ -101,7 +100,7 @@ availableUpgrades.map((item: Item) => {
   upgradeButton.addEventListener("click", () => {
     item.purchases++;
     numClicks -= item.cost;
-    item.cost *= 1.15;
+    item.cost *= COST_MULTIPLIER;
     updateDisplay();
     upgradeButton.innerHTML = displayUpgradeName(item);
     clickRate += item.rate;
@@ -121,7 +120,7 @@ availableUpgrades.map((item: Item) => {
 
 function incrementNumClicks() {
   isRunning = true;
-  numClicks += clickRate / framesPerSecond;
+  numClicks += clickRate / FRAMES_PER_SECOND;
   updateDisplay();
   requestAnimationFrame(incrementNumClicks);
 }
