@@ -9,10 +9,37 @@ const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
 
+class GameData {
+  private _fishCount: number = 0;
+  private _isRunning: boolean = false;
+  private _fishPerSecond: number = 1;
+
+  get fishCount(): number {
+    return this._fishCount;
+  }
+
+  set fishCount(value: number) {
+    this._fishCount = value;
+  }
+
+  get isRunning(): boolean {
+    return this._isRunning;
+  }
+
+  set isRunning(value: boolean) {
+    this._isRunning = value;
+  }
+  get fishPerSecond(): number {
+    return this._fishPerSecond;
+  }
+
+  set fishPerSecond(value: number) {
+    this._fishPerSecond = value;
+  }
+}
+
 // global variables
-let fishCount: number = 0;
-let isRunning: boolean = false;
-let fishPerSecond: number = 1;
+const gameData = new GameData();
 const FRAMES_PER_SECOND = 60;
 const COST_MULTIPLIER = 1.15;
 
@@ -81,7 +108,7 @@ clickButton.innerHTML = `<span class="big-emoji">🐟</span>`;
 clickButton.id = "click-button";
 app.append(clickButton);
 clickButton.onclick = () => {
-  fishCount++;
+  gameData.fishCount++;
   updateDisplay();
 };
 
@@ -99,12 +126,12 @@ availableUpgrades.map((upgrade: Upgrade) => {
   upgradeButton.innerHTML = displayUpgradeName(upgrade);
   upgradeButton.addEventListener("click", () => {
     upgrade.purchases++;
-    fishCount -= upgrade.cost;
+    gameData.fishCount -= upgrade.cost;
     upgrade.cost *= COST_MULTIPLIER;
     updateDisplay();
     upgradeButton.innerHTML = displayUpgradeName(upgrade);
-    fishPerSecond += upgrade.rate;
-    if (!isRunning) {
+    gameData.fishPerSecond += upgrade.rate;
+    if (!gameData.isRunning) {
       requestAnimationFrame(incrementfishCount);
     }
   });
@@ -112,22 +139,22 @@ availableUpgrades.map((upgrade: Upgrade) => {
 
   // Ensure the button is toggled on each frame
   const trackButton = () => {
-    upgradeButton.disabled = fishCount < upgrade.cost;
+    upgradeButton.disabled = gameData.fishCount < upgrade.cost;
     requestAnimationFrame(trackButton);
   };
   trackButton();
 });
 
 function incrementfishCount() {
-  isRunning = true;
-  fishCount += fishPerSecond / FRAMES_PER_SECOND;
+  gameData.isRunning = true;
+  gameData.fishCount += gameData.fishPerSecond / FRAMES_PER_SECOND;
   updateDisplay();
   requestAnimationFrame(incrementfishCount);
 }
 
 function updateDisplay() {
-  display.innerHTML = `${fishCount.toFixed(2)} 🐟`;
-  growthRateDisplay.innerHTML = `Growth rate: ${fishPerSecond.toFixed(2)} 🐟/sec`;
+  display.innerHTML = `${gameData.fishCount.toFixed(2)} 🐟`;
+  growthRateDisplay.innerHTML = `Growth rate: ${gameData.fishPerSecond.toFixed(2)} 🐟/sec`;
   purchasesDisplay.innerHTML = availableUpgrades
     .map((upgrade) => `${upgrade.purchases} ${upgrade.name}`)
     .join(" ");
