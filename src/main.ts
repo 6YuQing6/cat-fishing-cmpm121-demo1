@@ -93,22 +93,49 @@ const availableUpgrades: Upgrade[] = [
 
 // main document elements
 const display = document.createElement("p");
+display.id = "display";
 const growthRateDisplay = document.createElement("p");
 const purchasesDisplay = document.createElement("p");
 const buttons = document.createElement("div");
 updateDisplay();
 app.append(display);
 app.append(growthRateDisplay);
-app.append(purchasesDisplay);
-app.append(buttons);
+
+interface Fish {
+  emoji: string;
+  weight: number;
+  fish: number;
+}
 
 // button to increase the number of cats
 const clickButton = document.createElement("button");
 clickButton.innerHTML = `<span class="big-emoji">🐟</span>`;
 clickButton.id = "click-button";
 app.append(clickButton);
+app.append(purchasesDisplay);
+app.append(buttons);
+
 clickButton.onclick = () => {
-  gameData.fishCount++;
+  // inspired by yingting https://github.com/yingting1018/cmpm-121-demo-1/blob/main/src/main.ts
+  const fishEmojis: Fish[] = [
+    { emoji: "🐟", weight: 80, fish: 1 },
+    { emoji: "🐠", weight: 10, fish: 5 },
+    { emoji: "🐡", weight: 5, fish: 10 },
+    { emoji: "🐙", weight: 3, fish: 50 },
+    { emoji: "🦐", weight: 1, fish: 100 },
+    { emoji: "🦈", weight: 1, fish: 100 },
+  ];
+  const totalWeight = fishEmojis.reduce((sum, fish) => sum + fish.weight, 0);
+  let random = Math.random() * totalWeight;
+  for (const fish of fishEmojis) {
+    if (random < fish.weight) {
+      clickButton.innerHTML = `<span class="big-emoji">${fish.emoji}</span> <div> ${fish.fish} </div>`;
+      gameData.fishCount += fish.fish;
+      break;
+    }
+    random -= fish.weight;
+  }
+
   updateDisplay();
 };
 
@@ -153,7 +180,7 @@ function incrementfishCount() {
 }
 
 function updateDisplay() {
-  display.innerHTML = `${gameData.fishCount.toFixed(2)} 🐟`;
+  display.innerHTML = `${gameData.fishCount.toFixed(2)} fishes`;
   growthRateDisplay.innerHTML = `Growth rate: ${gameData.fishPerSecond.toFixed(2)} 🐟/sec`;
   purchasesDisplay.innerHTML = availableUpgrades
     .map((upgrade) => `${upgrade.purchases} ${upgrade.name}`)
